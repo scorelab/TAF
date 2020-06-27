@@ -20,6 +20,7 @@ public class listeners implements ITestListener, ISuiteListener{
 
     }
 
+    
      @Override
     public void onTestFailure(ITestResult result) {
         LOGGER.info("Test '" + result.getName() + "' --- FAILED" + "\n\n\n");
