@@ -43,4 +43,16 @@ public class listeners implements ITestListener, ISuiteListener{
         LOGGER.info("Test '" + result.getName() + "' --- SKIPPED" + "\n\n\n");
 
     }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        LOGGER.info("Completed Executing Test : " + "---- " + context.getName());
+
+    }
+
+     @Override
+    public void onStart(ITestContext context) {
+        LOGGER.info("About To Begin Executing : " + "---- " + context.getName() + " ----");
+
+    }
 }
