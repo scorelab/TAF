@@ -19,4 +19,28 @@ public class listeners implements ITestListener, ISuiteListener{
         LOGGER.info("About To End Executing Suite : " + arg0.getName());
 
     }
+
+     @Override
+    public void onTestFailure(ITestResult result) {
+        LOGGER.info("Test '" + result.getName() + "' --- FAILED" + "\n\n\n");
+    }
+
+     @Override
+    public void onTestStart(ITestResult result) {
+        strLoggerMsg = ("Test Started Running: " + "---- " + result.getMethod().getMethodName() + " ---- at:" + result.getStartMillis());
+        LOGGER.info(strLoggerMsg);
+
+    }
+
+     @Override
+    public void onTestSuccess(ITestResult result) {
+        LOGGER.info("Test '" + result.getName() + "' --- PASSED" + "\n\n\n");
+    }
+
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        LOGGER.info("Test '" + result.getName() + "' --- SKIPPED" + "\n\n\n");
+
+    }
 }
