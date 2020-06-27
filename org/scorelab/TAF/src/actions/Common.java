@@ -1,4 +1,4 @@
-package com.framework.qa.uicore.actions;
+package actions;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
