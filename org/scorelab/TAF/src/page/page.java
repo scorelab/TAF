@@ -51,7 +51,7 @@ public class page {
             this.verificationErrors.append(throwableToString(var4));
         }
     }
-    
+
     public void verifyTrue(boolean condition, String message) {
         try {
             Assert.assertTrue(condition, message);
@@ -132,7 +132,59 @@ public class page {
         }
     }
 
-   
+       protected void initializeElements(BasicPage sourcePage) throws FrameworkException {
+        String strDefault = "";
+        String strFindBy = "";
+        String strValue = "";
+        FrameworkProperties loadProperties = new FrameworkProperties();
+        LinkedHashMap<String, LinkedHashMap<String, String>> loadDataFromXml = new LinkedHashMap<String, LinkedHashMap<String, String>>();
+                     
+        for (Field field : sourcePage.getClass().getDeclaredFields()) {
+            if (BaseElement.class.isAssignableFrom(field.getType())) {
+                loadDataFromXml = (LinkedHashMap<String, LinkedHashMap<String, String>>) loadProperties.readElementsForTagFromFile(ELEMENT_PATH + getSubDirPath(sourcePage.getClass().getPackage().getName().toString()) + "elements.xml", sourcePage.getClass().getSimpleName(), field.getName());
+
+                strFindBy = ((LinkedHashMap<String, String>) loadDataFromXml.get(field.getName())).get(FIND_BY);
+                strValue = ((LinkedHashMap<String, String>) loadDataFromXml.get(field.getName())).get(VALUE);
+                if (loadDataFromXml.size() == 4) {
+                    strDefault = ((LinkedHashMap<String, String>) loadDataFromXml.get(field.getName())).get(DEFAULT);
+                }
+
+                field.setAccessible(true);
+                BaseElement element = null;
+
+                Constructor constructor = null;
+                try {
+                    constructor = field.getType().getConstructor(new Class[]{RemoteWebDriver.class, By.class});
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    element = (BaseElement) constructor.newInstance(driver, ((By) By.class.getMethod(strFindBy, String.class).invoke(null, strValue)));
+                    field.set(sourcePage, element);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+        if (!type.getSuperclass().getSimpleName().equalsIgnoreCase("BasicPage")) {
+            fields = getAllFields(fields, type.getSuperclass());
+        }
+
+        return fields;
+    }
+        
+
+    }
     
 
 
