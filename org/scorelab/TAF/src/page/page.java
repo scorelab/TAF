@@ -42,6 +42,29 @@ public class page {
     public PageBase() {
     }
 
+    public void test_step_initiation() {
+        Reporter.log("<td> "+Thread.currentThread().getStackTrace()[2].getMethodName()+"</td><td>Started</td><td></td><td></td><td></td>");
+    }
+
+    public void check_For_Verification_Errors(){
+        checkForVerificationErrors();
+    }
+
+    public void clearVerificationErrors() {
+        this.verificationErrors = new StringBuffer();
+        this.errorMessage = new StringBuffer();
+    }
+
+    public void checkForVerificationErrors() {
+        String verificationErrorString = this.errorMessage.toString() + "\n" + this.verificationErrors.toString();
+        this.clearVerificationErrors();
+        if (!"\n".equals(verificationErrorString)) {
+            Assert.fail(verificationErrorString);
+        }
+    }
+
+  
+
      public void verifyEquals(boolean actual, boolean expected, String message) {
         try {
             Assert.assertEquals(actual, expected, message);
