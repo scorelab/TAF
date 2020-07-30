@@ -1,7 +1,7 @@
-package com.framework.qa.uicore.driver;
+package driver;
 
 import com.framework.qa.utils.exception.FrameworkException;
-import com.framework.qa.uicore.util.Constant;
+import util.Constant;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
