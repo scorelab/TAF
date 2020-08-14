@@ -33,4 +33,20 @@ public class CoreUtil {
         Reporter.log("<td>verification failure: " + message + "</td><td>Failed</td><td><a href=\"../" + SCREENSHOT_BROWSER_PATH + fileName + "-browser.png\" target=\"_blank\">browser</a></td><td><a href=\"../" + SCREENSHOT_DESKTOP_PATH + fileName + "-desktop.png\" target=\"_blank\">desktop</a></td><td><a href=\"../" + HTML_PATH + fileName + "-page.html\" target=\"_blank\">page</a></td>");
     }
 
+    public static void captureScreenshot(WebDriver driver, String fileName, WebElement ele) throws IOException {
+        new File("target/" + SCREENSHOT_ELEMENT_PATH).mkdirs(); // Insure directory is there
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        BufferedImage fullImg = ImageIO.read(screenshot);
+        //Get the location of element on the page
+        org.openqa.selenium.Point point = ele.getLocation();
+        //Get width and height of the element
+        int eleWidth = ele.getSize().getWidth();
+        int eleHeight = ele.getSize().getHeight();
+        //Crop the entire page screenshot to get only element screenshot
+        BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
+        ImageIO.write(eleScreenshot, "png", screenshot);
+        //Copy the element screenshot to disk
+        FileUtils.copyFile(screenshot, new File(fileName + "-element.png"));
+    }
+
 }
