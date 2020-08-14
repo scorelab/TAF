@@ -49,4 +49,19 @@ public class CoreUtil {
         FileUtils.copyFile(screenshot, new File(fileName + "-element.png"));
     }
 
+    private static void captureHTMLFile(WebDriver driver, String fileName) {
+        new File("target/" + HTML_PATH).mkdirs(); // Insure directory is there
+        String stored_report = driver.getPageSource();
+
+        File f = new File(fileName + "-page.html");
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(f, true);
+            writer.write(stored_report);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
