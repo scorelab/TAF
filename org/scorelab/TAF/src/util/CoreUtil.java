@@ -64,4 +64,15 @@ public class CoreUtil {
         }
     }
 
+    private static void captureScreenshot(WebDriver driver, String fileName) {
+        try {
+            new File("target/" + SCREENSHOT_BROWSER_PATH).mkdirs(); // Insure directory is there
+            FileOutputStream out = new FileOutputStream(fileName + "-browser.png");
+            out.write(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES));
+            out.close();
+        } catch (Exception e) {
+            // No need to crash the tests if the screenshot fails
+        }
+    }
+
 }
